@@ -9,8 +9,24 @@ public:
 	void update();
 	void draw();
 	void keyPressed(int key);
-	
+    void audioIn(float * input, int bufferSize, int nChannels);
+
 	ofVideoGrabber cam;
 	ofxFaceTracker tracker;
 	ExpressionClassifier classifier;
+    
+    
+    // Audio
+    vector <float> left;
+    vector <float> right;
+    
+    int 	bufferCounter;
+    int 	drawCounter;
+    
+    float smoothedVol;
+    float scaledVol;
+    
+    ofSoundStream soundStream;
+
+    
 };

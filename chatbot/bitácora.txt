@@ -1,0 +1,12 @@
+2017-10-27
+
+* Se revisó el código para construir el índice invertido del corpus seleccionado
+* Se ejecutó el script y se revisó el índice que construye
+
+Siguientes pasos:
+1) Utilizar lematizador en lugar de porter stemmer
+2) Crear una capa con una función que ligue palabras clave con respuestas del corpus
+3) Crear un proyecto de Django en cual se guarde el índice invertido, twits y respuestas
+4) Crear un script que se ejecute cada cierto tiempo para obtener twits con las palabras clave
+5) Crear un script que se ejecute cada cierto tiempo para contestar twits encontrados en el paso anterior
+6) Revisar ifttt.com para ver cómo lograr extraer twits de modo controlado

@@ -22,15 +22,16 @@ import time
 import sqlite3
 import nltk
 # from nltk.corpus import stopwords
-from porterstemmer import PorterStemmer
 
 # Data Model
 # The database is a simple dictionary
 database = {}
 
-# We will create a term object for each unique inst
-ance of a term
+# We will create a term object for each unique instance of a term
 #
+class Docs():
+    terms = {}
+
 class Term():
     termid = 0
     termfreq = 0
@@ -41,24 +42,34 @@ class Term():
 def splitchars(line) :
     return chars.split(line)
 
+# this small routine is used to accumulate query idf values
+def elenQ(elen, a):
+    return(float(math.pow(a.idf,2))+float(elen))
+
+# this small routine is used to accumulate document tfidf values
+def elenD(elen, a):
+    valor = float(math.pow(a.tfidf,2))+float(elen)
+    return(valor)
+
+
 # split on an
 
 # download stop words
 nltk.download('stopwords')
 
 # define global variables used as counters
-tokens = 0
-documents = 0
-terms = 0
-termindex = 0
-docindex = 0
+tokens     = 0
+documents  = 0
+terms      = 0
+termindex  = 0
+docindex   = 0
 
 # initialize list variable
 #
 alltokens = []
 alldocs = []
 
-#
+
 # Capture the start time of the routine so that we can determine the total running
 # time required to process the corpus
 #
@@ -67,7 +78,7 @@ t2 = time.localtime()
 
 # set the name of the directory for the corpus
 #
-dirname = "/Volumes/Data/_documentos/_Escuela/_UoP/__dev/cacm"
+dirname = "/Users/pulso8/Desktop/Data/_Desarrollo/of_v0.9.8_osx_release/apps/laboratorioAppsCulturales/chatbot/corpus"
 
 # For each document in the directory read the document into a string
 #
@@ -79,12 +90,12 @@ for f in all:
         data=myfile.read().replace('\n', '')
         for token in data.split():
             alltokens.append(token)
-	    tokens+=1
+            tokens += 1
 
 
 # Open for write a file for the document dictionary
 #
-documentfile = open(dirname+'/'+'documents.dat', 'w')
+documentfile = open(dirname+'/'+'documents.txt', 'w')
 alldocs.sort()
 
 for f in alldocs:
@@ -106,21 +117,21 @@ for i in alltokens:
     if i not in g:
        g.append(i)
        terms+=1
-print "Raw terms: %i" % terms
+print("Raw terms: %i" % terms)
 
 # Remove stopwords using nltk
-filtered_g = [word for word in g if word not in nltk.corpus.stopwords.words('english')]
+filtered_g = [word for word in g if word not in nltk.corpus.stopwords.words('spanish')]
 dif_g      = len(g) - len(filtered_g)
 g          = filtered_g
 terms      = len(g)
-print "Terms without stopwords:  %i" % terms
+print("Terms without stopwords:  %i" % terms)
 
 # Remove words not beginning with a number
 filtered_g = [word for word in g if word[0].isalpha()]
 dif_g2     = len(g) - len(filtered_g)
 g          = filtered_g
 terms      = len(g)
-print "Terms without those those beginning with a number:  %i" % terms
+print("Terms without those those beginning with a number:  %i" % terms)
 
 # Remove words with trailing not alphanumeric characters
 filtered_g = []
@@ -129,17 +140,17 @@ for i in g:
     filtered_g.append(re.sub(pattern, '', i))
 g          = filtered_g
 terms      = len(g)
-print "Terms without numeric terms:  %i" % terms
+print("Terms without numeric terms:  %i" % terms)
 
 # Sort and remove duplicates
 sorted_g   = sorted(set(g))
 g          = sorted_g
 terms      = len(g)
-print "Final number of unique terms filtered and sorted:  %i" % terms
+print("Final number of unique terms filtered and sorted:  %i" % terms)
 
 
 # Stem the terms using nltk
-sno = nltk.stem.SnowballStemmer('english')
+sno = nltk.stem.SnowballStemmer('spanish')
 for i in g:
     s.append(sno.stem(i))
 
@@ -153,7 +164,7 @@ for i in g:
 
 # Output Index to disk file. As part of this process we assign an 'index' number to each unique term.
 #
-indexfile = open(dirname+'/'+'index.dat', 'w')
+indexfile = open(dirname+'/'+'index.txt', 'w')
 
 for i in g:
   termindex += 1
@@ -163,12 +174,12 @@ indexfile.close()
 
 # Print metrics on corpus
 #
-print 'Processing Start Time: %.2d:%.2d' % (t2.tm_hour, t2.tm_min)
-print "Documents %i" % documents
-print "Tokens %i" % tokens
-print "Terms %i" % terms
-print "Total number of stop words: %i" % dif_g
-print "Removed words with leading non alpha characters: %i" % dif_g2
+print("Processing Start Time: %.2d:%.2d" % (t2.tm_hour, t2.tm_min))
+print("Documents %i" % documents)
+print("Tokens %i" % tokens)
+print("Terms %i" % terms)
+print("Total number of stop words: %i" % dif_g)
+print("Removed words with leading non alpha characters: %i" % dif_g2)
 
 t2 = time.localtime()
-print 'Processing End Time: %.2d:%.2d' % (t2.tm_hour, t2.tm_min)
+print("Processing End Time: %.2d:%.2d" % (t2.tm_hour, t2.tm_min))

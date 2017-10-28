@@ -18,10 +18,10 @@ class Artista(models.Model):
     red_soc_per   = models.CharField(max_length=400)
     red_soc_com   = models.CharField(max_length=400)
     web           = models.CharField(max_length=400)
-    
+
     def __str__(self):
         return '%s %s %s' % (self.nombre, self.apellido_p, self.apellido_m)
-    
+
 class Programador(models.Model):
     nombre     = models.CharField(max_length=30)
     apellido_p = models.CharField(max_length=30)
@@ -29,8 +29,8 @@ class Programador(models.Model):
 
     def __str__(self):
         return '%s %s' % (self.nombre, self.apellido_p)
-    
-    
+
+
 class Coleccionista(models.Model):
     nombre     = models.CharField(max_length=30)
     apellido_p = models.CharField(max_length=30)
@@ -38,15 +38,6 @@ class Coleccionista(models.Model):
 
     def __str__(self):
         return '%s %s' % (self.nombre, self.apellido_p)
-
-    
-class Lugar(models.Model):
-    nombre     = models.CharField(max_length=30)
-    longitud   = models.IntegerField()
-    latitud    = models.IntegerField()
-
-    def __str__(self):
-        return '%s' % (self.nombre)
 
 
 class Pieza(models.Model):
@@ -67,11 +58,11 @@ class Pieza(models.Model):
     observaciones   = models.CharField(max_length=400)
     artista         = models.ForeignKey(Artista)
     coleccionista   = models.ForeignKey(Coleccionista)
-    
+
     def __str__(self):
         return '%s - %s' % (self.nombre, self.descripcion)
 
-    
+
 class Sede(models.Model):
     nombre_sede     = models.CharField(max_length=30)
     tipo_sede       = models.CharField(max_length=30)
@@ -82,7 +73,14 @@ class Sede(models.Model):
     tipo_gestion    = models.CharField(max_length=30)
     Caract          = models.CharField(max_length=400)
     num_presen      = models.IntegerField()
-    
+
     def __str__(self):
         return '%s %s' % (self.nombre_sede, self.tipo_sede)
- 
+
+class Registro(models.Model):
+    pieza           = models.ForeignKey(Pieza)
+    programador     = models.ForeignKey(Programador)
+    sede            = models.ForeignKey(Sede)
+
+    def __str__(self):
+        return '%s %s' % (self.pieza, self.sede)
