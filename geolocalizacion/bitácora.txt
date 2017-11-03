@@ -1,0 +1,10 @@
+2017-10-27
+* Se revisó el modelo de datos
+* Se pensó en los próximos pasos
+
+Siguientes pasos:
+1) Elegir tipo de campo para cada uno de los campos en modelos
+2) Agregar Django jet para mejorar apariencia y usabilidad de panel de administración
+3) Crear plantilla de página principal
+4) Crear plantilla con visualización de datos estadísticos de una Pieza
+5) Integrar API de Google Maps
