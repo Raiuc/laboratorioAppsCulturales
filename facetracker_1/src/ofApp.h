@@ -27,6 +27,13 @@ public:
     float scaledVol;
     
     ofSoundStream soundStream;
+    ofTrueTypeFont fuente;
+    
+    ofImage ojos;
+    ofImage nariz;
+    ofImage boca;
+    ofImage cuernos;
+    ofImage cuerpo;
 
     
 };

@@ -12,6 +12,8 @@ void ofApp::setup() {
 	tracker.setup();
 	tracker.setRescale(.5);
     
+    fuente.load("fonts/verdana.ttf", 6);
+    
     // Audio
     soundStream.printDeviceList();
     soundStream.setDeviceID(0);
@@ -26,6 +28,13 @@ void ofApp::setup() {
     scaledVol		= 0.0;
 
     soundStream.setup(this, 0, 2, 44100, bufferSize, 4);
+    
+    
+    
+    ojos.load("png/elementos-09.png");    
+    boca.load("png/elementos-05.png");
+
+
 
 
 }
@@ -49,23 +58,33 @@ void ofApp::draw() {
 	cam.draw(0, 0);
 	//tracker.draw();
     ofVec2f v = tracker.getPosition();
+    vector<ofVec2f> puntos = tracker.getImagePoints();
+    
+    for(int i = 0; i < puntos.size(); i++){
+        ofDrawCircle(puntos[i].x, puntos[i].y, 5);
+        fuente.drawString(ofToString(i), puntos[i].x, puntos[i].y - 5);
+    }
+    
     ofPushStyle();
-        ofSetColor(255, 0, 0);
-        ofDrawCircle(v.x, v.y, scaledVol);
+        //ofSetColor(255, 0, 0);
+        //ofDrawCircle(v.x, v.y, scaledVol);
+        ojos.draw(v.x, v.y, ojos.getWidth()/4, ojos.getHeight()/4);
     ofPopStyle();
+    
+    
 	int w = 100, h = 12;
 	ofPushStyle();
 	ofPushMatrix();
 	ofTranslate(5, 10);
 	int n = classifier.size();
 	int primary = classifier.getPrimaryExpression();
-  for(int i = 0; i < n; i++){
-		ofSetColor(i == primary ? ofColor::red : ofColor::black);
-		ofDrawRectangle(0, 0, w * classifier.getProbability(i) + .5, h);
-		ofSetColor(255);
-		ofDrawBitmapString(classifier.getDescription(i), 5, 9);
-		ofTranslate(0, h + 5);
-  }
+    for(int i = 0; i < n; i++){
+        ofSetColor(i == primary ? ofColor::red : ofColor::black);
+        ofDrawRectangle(0, 0, w * classifier.getProbability(i) + .5, h);
+        ofSetColor(255);
+        ofDrawBitmapString(classifier.getDescription(i), 5, 9);
+        ofTranslate(0, h + 5);
+    }
 	ofPopMatrix();
 	ofPopStyle();
 	

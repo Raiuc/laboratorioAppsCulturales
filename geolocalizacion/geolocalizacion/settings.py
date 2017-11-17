@@ -26,7 +26,7 @@ SECRET_KEY = '7fu-so0083%5r!zke@^1e6kk^pq0*guarci@eqyj$-=_4^ayj+'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+GOOGLE_MAPS_API_KEY = ' AIzaSyDRtkzv9rqeFD_HpEF7FyFN7vSufZmcDhQ '
 
 # Application definition
 
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'artistas',
+    'django_google_maps',
 ]
 
 MIDDLEWARE = [
