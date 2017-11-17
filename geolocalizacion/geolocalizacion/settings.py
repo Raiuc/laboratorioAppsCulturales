@@ -56,7 +56,7 @@ ROOT_URLCONF = 'geolocalizacion.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,6 +68,9 @@ TEMPLATES = [
         },
     },
 ]
+
+
+# Templates:
 
 WSGI_APPLICATION = 'geolocalizacion.wsgi.application'
 

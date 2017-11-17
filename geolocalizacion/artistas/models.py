@@ -21,8 +21,8 @@ class Artista(models.Model):
     red_soc_com   = models.CharField(max_length=400)
     web           = models.CharField(max_length=400)
 
-    created          = models.DateTimeField(auto_now_add = True)
-    modified         = models.DateTimeField(auto_now = True)
+    # created          = models.DateTimeField(auto_now_add = True)
+    # modified         = models.DateTimeField(auto_now = True)
 
 
     def __str__(self):
@@ -33,8 +33,8 @@ class Programador(models.Model):
     apellido_p = models.CharField(max_length=30)
     apellido_m = models.CharField(max_length=30)
 
-    created          = models.DateTimeField(auto_now_add = True)
-    modified         = models.DateTimeField(auto_now = True)
+    # created          = models.DateTimeField(auto_now_add = True)
+    # modified         = models.DateTimeField(auto_now = True)
 
     def __str__(self):
         return '%s %s' % (self.nombre, self.apellido_p)
@@ -71,8 +71,8 @@ class Pieza(models.Model):
     artista         = models.ForeignKey(Artista)
     coleccionista   = models.ForeignKey(Coleccionista)
 
-    created          = models.DateTimeField(auto_now_add = True)
-    modified         = models.DateTimeField(auto_now = True)
+    # created          = models.DateTimeField(auto_now_add = True)
+    # modified         = models.DateTimeField(auto_now = True)
 
     def __str__(self):
         return '%s - %s' % (self.nombre, self.descripcion)
