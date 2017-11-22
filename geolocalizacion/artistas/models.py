@@ -69,7 +69,7 @@ class Pieza(models.Model):
     url_video       = models.CharField(max_length=400)
     observaciones   = models.CharField(max_length=400)
     artista         = models.ForeignKey(Artista)
-    coleccionista   = models.ForeignKey(Coleccionista)
+    # coleccionista   = models.ForeignKey(Coleccionista) // Se elimina este campo por ser artes escénicas
 
     created          = models.DateTimeField(auto_now_add = True)
     modified         = models.DateTimeField(auto_now = True)
@@ -98,9 +98,11 @@ class Registro(models.Model):
     ano_present     = models.IntegerField()
     tipo_gestion    = models.CharField(max_length=30)
     num_presen      = models.IntegerField()
+    fecha           = models.DateTimeField()
+    comentarios     = models.TextField()
 
-    created          = models.DateTimeField(auto_now_add = True)
-    modified         = models.DateTimeField(auto_now = True)
+    created         = models.DateTimeField(auto_now_add = True)
+    modified        = models.DateTimeField(auto_now = True)
 
     def __str__(self):
         return '%s %s' % (self.pieza, self.sede)
