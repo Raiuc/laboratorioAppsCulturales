@@ -21,4 +21,5 @@ from artistas import views as a_views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', a_views.index),
+    url(r'^mapa$', a_views.ArtistasListView.as_view(),name='mapa_artistas')
 ]
