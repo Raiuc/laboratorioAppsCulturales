@@ -22,6 +22,7 @@ public:
     
     int 	bufferCounter;
     int 	drawCounter;
+    int     scene;
     
     float smoothedVol;
     float scaledVol;

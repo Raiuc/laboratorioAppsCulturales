@@ -6,7 +6,8 @@ using namespace cv;
 //--------------------------------------------------------------
 void ofApp::setup() {
 	ofSetVerticalSync(true);
-    cam.setDeviceID(0);
+    cam.listDevices();
+    cam.setDeviceID(2);
 	cam.initGrabber(640, 480);
 	
 	tracker.setup();
@@ -16,12 +17,13 @@ void ofApp::setup() {
     
     // Audio
     soundStream.printDeviceList();
-    soundStream.setDeviceID(0);
+    soundStream.setDeviceID(3);
     int bufferSize = 256;
 
     left.assign(bufferSize, 0.0);
     right.assign(bufferSize, 0.0);
     
+    scene           = 0;
     bufferCounter	= 0;
     drawCounter		= 0;
     smoothedVol     = 0.0;
@@ -50,27 +52,28 @@ void ofApp::update() {
 		}		
 	}
     
-    scaledVol = ofMap(smoothedVol, 0.0, 0.05, 10, 100, true);
-
+    scaledVol = ofMap(smoothedVol, 0.0, 0.05, 0, 1, true);
+    //cout << scaledVol << " ";
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-	ofSetColor(255);
-	cam.draw(0, 0);
-	//tracker.draw();
-    ofVec2f v = tracker.getPosition();
-    vector<ofVec2f> puntos = tracker.getImagePoints();
-    
-    for(int i = 0; i < puntos.size(); i++){
-        ofDrawCircle(puntos[i].x, puntos[i].y, 5);
-        fuente.drawString(ofToString(i), puntos[i].x, puntos[i].y - 5);
-    }
-    
+
+    ofSetColor(255);
+    cam.draw(0, 0);
     ofPushStyle();
+
+        //tracker.draw();
+        ofVec2f v = tracker.getPosition();
+        vector<ofVec2f> puntos = tracker.getImagePoints();
+        
+        for(int i = 0; i < puntos.size(); i++){
+            ofDrawCircle(puntos[i].x + 640, puntos[i].y, 5);
+            fuente.drawString(ofToString(i), puntos[i].x + 640, puntos[i].y - 5);
+        }
     
         //ofSetColor(255, 0, 0);
-        //ofDrawCircle(v.x, v.y, scaledVol);
+        ofDrawCircle(v.x, v.y, scaledVol);
         if (puntos.size()) {
             float angle = puntos[0].angle(puntos[16]);
             
@@ -78,9 +81,9 @@ void ofApp::draw() {
             ofPushMatrix();
                 ofTranslate(puntos[17].x, puntos[17].y);
                 //ofRotateZ(angle);
-                ojoI.draw(0, 0,
-                          abs(puntos[17].x - puntos[21].x),
-                          abs(puntos[17].y - puntos[41].y));
+                ojoI.draw(0, 480,
+                          abs(puntos[17].x - puntos[21].x) * (1 + scaledVol),
+                          abs(puntos[17].y - puntos[41].y) * (1 + scaledVol));
             
             ofPopMatrix();
 
@@ -88,9 +91,9 @@ void ofApp::draw() {
             ofPushMatrix();
                 ofTranslate(puntos[22].x, puntos[22].y);
                 //ofRotateZ(angle);
-                ojoD.draw(0, 0,
-                          abs(puntos[22].x - puntos[26].x),
-                          abs(puntos[22].y - puntos[47].y));
+                ojoD.draw(0, 480,
+                          abs(puntos[22].x - puntos[26].x) * (1 + scaledVol),
+                          abs(puntos[22].y - puntos[47].y) * (1 + scaledVol));
             
             ofPopMatrix();
             
@@ -99,12 +102,12 @@ void ofApp::draw() {
             
                 ofTranslate(puntos[48].x, puntos[48].y);
                 //ofRotateZ(angle);
-                boca.draw(0, 0,
-                          abs(puntos[54].x - puntos[48].x),
-                          abs(puntos[50].y - puntos[57].y));
+                boca.draw(0, 480,
+                          abs(puntos[54].x - puntos[48].x) * (1 + scaledVol),
+                          abs(puntos[50].y - puntos[57].y) * (1 + scaledVol));
 
             ofPopMatrix();
-            cout << angle << " \n";
+            //cout << angle << " \n";
         }
 
     ofPopStyle();
@@ -117,6 +120,9 @@ void ofApp::draw() {
             ofTranslate(5, 10);
             int n = classifier.size();
             int primary = classifier.getPrimaryExpression();
+            if (n && primary == 0) {
+                ofSystem("ls");
+            }
             for(int i = 0; i < n; i++){
                 ofSetColor(i == primary ? ofColor::red : ofColor::black);
                 ofDrawRectangle(0, 0, w * classifier.getProbability(i) + .5, h);
@@ -131,10 +137,10 @@ void ofApp::draw() {
 	ofDrawBitmapStringHighlight(
 		string() +
 		"r - reset\n" +
-		"e - add expression\n" +
-		"a - add sample\n" +
-		"s - save expressions\n"
-		"l - load expressions",
+		"e - agregar expresi\u00F3n\n" +
+		"a - add muestra\n" +
+		"s - guardar expresiones\n"
+		"l - cargar expresiones",
 		14, ofGetHeight() - 7 * 12);
 }
 
