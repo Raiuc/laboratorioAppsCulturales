@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -11,51 +12,94 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <!-- Custom styles for this template -->
-  </head>
 
-  <body>
+
+
+    <!-- Custom styles for this template -->
+
+
+    <style>
+        .s7s3 {
+            display: flex;
+            flex-wrap: wrap;
+            width: 90%;
+            height: 60vh;
+        }
+        
+        #gmap {
+            width: 70%;
+            height: 60vh;
+            background-color: aqua;
+        }
+        
+        .s20 {
+            width: 30%;
+            height: 20vh;
+            background-color: orchid;
+            color: aliceblue;
+        }
+        
+        .s60 {
+            width: 30%;
+            height: 60vh;
+            background-color: blueviolet;
+        }
+
+    </style>
+
+</head>
+
+<body>
 
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <a class="navbar-brand" href="#">Navegación</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" href="#">Navegación</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Geolocalización</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Capturar Datos</a>
-          </li>
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Geolocalización</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Capturar Datos</a>
+                </li>
 
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-        </form>
-      </div>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+            </form>
+        </div>
     </nav>
 
-    <main role="main" class="container">
-      <br><br><br>
-      <div class="starter-template">
-        <p class="lead">Proyecto para geolocalización de obras artísticas.</p>
-      </div>
 
-    </main><!-- /.container -->
+    <!-- /.container -->
+    {% block contenido %}
+     
+      {% endblock %}
+    <!--js para mapas-->
+    <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
 
-
+    <script src="js/script4.js"></script>
+    <script src="js/script1.js"></script>
+    <!--mapas-->
+    <script src="js/script2.js"></script>
+    <!--<script src="assets/js/script1.js"></script>-->
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-  </body>
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?key= AIzaSyBd2ljItzohbYqcs7dTB9Ou7WnKjm6I70Q&callback=initMap"></script>
+</body>
+
 </html>

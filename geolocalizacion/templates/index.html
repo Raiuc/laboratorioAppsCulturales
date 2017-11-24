@@ -1,1 +1,49 @@
-{% extends "base.html" %}
+{% extends "base.html" %} 
+    {% block contenido %}
+
+    <main role="main" class="container">
+        <br><br><br>
+        <div class="starter-template">
+            <p class="lead">Proyecto para geolocalización de obras artísticas.</p>
+        </div>
+
+        <div class="caja1" style="width:90%;heigth:3vh;background-color:#000;color:#fff;">
+            hola
+
+        </div>
+
+        <div class="s7s3">
+
+
+            <div id="gmap">
+                <script>
+                    function initMap() {
+                        // Create a map object and specify the DOM element for display.
+                        var map = new google.maps.Map(document.getElementById('gmap'), {
+                            center: {
+                                lat: 19.43393,
+                                lng: -99.14056
+                            },
+                            zoom: 18
+                        });
+                    }
+
+                </script>
+            </div>
+            <div class="s60">
+                <div class="s20">
+                    {% for artista in object_list %}
+                        {{ artista.nombre }}
+                    {% endfor %}
+                </div> 
+
+                <div class="s20">
+                    Coleccionista
+                </div> 
+                <div class="s20">
+                    Sede
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
