@@ -29,7 +29,7 @@ public:
     ofSoundStream soundStream;
     ofTrueTypeFont fuente;
     
-    ofImage ojos;
+    ofImage ojoI, ojoD;
     ofImage nariz;
     ofImage boca;
     ofImage cuernos;

@@ -31,8 +31,10 @@ void ofApp::setup() {
     
     
     
-    ojos.load("png/elementos-09.png");    
-    boca.load("png/elementos-05.png");
+    ojoI.load("png/ojoI.png");
+    ojoD.load("png/ojoD.png");
+
+    boca.load("png/boca.png");
 
 
 
@@ -66,27 +68,64 @@ void ofApp::draw() {
     }
     
     ofPushStyle();
+    
         //ofSetColor(255, 0, 0);
         //ofDrawCircle(v.x, v.y, scaledVol);
-        ojos.draw(v.x, v.y, ojos.getWidth()/4, ojos.getHeight()/4);
+        if (puntos.size()) {
+            float angle = puntos[0].angle(puntos[16]);
+            
+            // Dibujar ojo izquierdo
+            ofPushMatrix();
+                ofTranslate(puntos[17].x, puntos[17].y);
+                //ofRotateZ(angle);
+                ojoI.draw(0, 0,
+                          abs(puntos[17].x - puntos[21].x),
+                          abs(puntos[17].y - puntos[41].y));
+            
+            ofPopMatrix();
+
+            // Dibujar ojo derecho
+            ofPushMatrix();
+                ofTranslate(puntos[22].x, puntos[22].y);
+                //ofRotateZ(angle);
+                ojoD.draw(0, 0,
+                          abs(puntos[22].x - puntos[26].x),
+                          abs(puntos[22].y - puntos[47].y));
+            
+            ofPopMatrix();
+            
+            // Dibujar boca
+            ofPushMatrix();
+            
+                ofTranslate(puntos[48].x, puntos[48].y);
+                //ofRotateZ(angle);
+                boca.draw(0, 0,
+                          abs(puntos[54].x - puntos[48].x),
+                          abs(puntos[50].y - puntos[57].y));
+
+            ofPopMatrix();
+            cout << angle << " \n";
+        }
+
     ofPopStyle();
     
     
 	int w = 100, h = 12;
+    
 	ofPushStyle();
-	ofPushMatrix();
-	ofTranslate(5, 10);
-	int n = classifier.size();
-	int primary = classifier.getPrimaryExpression();
-    for(int i = 0; i < n; i++){
-        ofSetColor(i == primary ? ofColor::red : ofColor::black);
-        ofDrawRectangle(0, 0, w * classifier.getProbability(i) + .5, h);
-        ofSetColor(255);
-        ofDrawBitmapString(classifier.getDescription(i), 5, 9);
-        ofTranslate(0, h + 5);
-    }
-	ofPopMatrix();
-	ofPopStyle();
+        ofPushMatrix();
+            ofTranslate(5, 10);
+            int n = classifier.size();
+            int primary = classifier.getPrimaryExpression();
+            for(int i = 0; i < n; i++){
+                ofSetColor(i == primary ? ofColor::red : ofColor::black);
+                ofDrawRectangle(0, 0, w * classifier.getProbability(i) + .5, h);
+                ofSetColor(255);
+                ofDrawBitmapString(classifier.getDescription(i), 5, 9);
+                ofTranslate(0, h + 5);
+            }
+            ofPopMatrix();
+    ofPopStyle();
 	
 	ofDrawBitmapString(ofToString((int) ofGetFrameRate()), ofGetWidth() - 20, ofGetHeight() - 10);
 	ofDrawBitmapStringHighlight(
