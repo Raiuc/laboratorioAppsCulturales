@@ -37,6 +37,7 @@ router.register(r'registro', a_views.RegistroListViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
     url(r'^$', a_views.index),
     url(r'^mapa$', a_views.ArtistasListView.as_view(),name='mapa_artistas'),
     url(r'^', include(router.urls))

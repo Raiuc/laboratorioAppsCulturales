@@ -31,6 +31,8 @@ GOOGLE_MAPS_API_KEY = ' AIzaSyDRtkzv9rqeFD_HpEF7FyFN7vSufZmcDhQ '
 # Application definition
 
 INSTALLED_APPS = [
+    'jet',
+    'imagekit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

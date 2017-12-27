@@ -6,8 +6,9 @@ using namespace cv;
 //--------------------------------------------------------------
 void ofApp::setup() {
 	ofSetVerticalSync(true);
+    ofSetFrameRate(60);
     cam.listDevices();
-    cam.setDeviceID(2);
+    cam.setDeviceID(0);
 	cam.initGrabber(640, 480);
 	
 	tracker.setup();
@@ -16,8 +17,8 @@ void ofApp::setup() {
     fuente.load("fonts/verdana.ttf", 6);
     
     // Audio
-    soundStream.printDeviceList();
-    soundStream.setDeviceID(3);
+    //soundStream.printDeviceList();
+    //soundStream.setDeviceID(3);
     int bufferSize = 256;
 
     left.assign(bufferSize, 0.0);
@@ -26,8 +27,17 @@ void ofApp::setup() {
     scene           = 0;
     bufferCounter	= 0;
     drawCounter		= 0;
+    contador        = 0;
+    offset[0].x     = 300;
+    offset[0].y     = 350;
+
+    offset[1].x     = 300;
+    offset[1].y     = 350;
+    
     smoothedVol     = 0.0;
     scaledVol		= 0.0;
+    listening       = TRUE;
+    
 
     soundStream.setup(this, 0, 2, 44100, bufferSize, 4);
     
@@ -39,12 +49,18 @@ void ofApp::setup() {
     boca.load("png/boca.png");
 
 
-
-
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
+    
+    contador++;
+    if(contador > 60){
+        contador = 0;
+        listening = TRUE;
+    }
+    
+    
 	cam.update();
 	if(cam.isFrameNew()) {
 		if(tracker.update(toCv(cam))) {
@@ -72,16 +88,21 @@ void ofApp::draw() {
             fuente.drawString(ofToString(i), puntos[i].x + 640, puntos[i].y - 5);
         }
     
-        //ofSetColor(255, 0, 0);
-        ofDrawCircle(v.x, v.y, scaledVol);
         if (puntos.size()) {
             float angle = puntos[0].angle(puntos[16]);
+            
+            // Dibujar nariz
+            ofPushStyle();
+                ofSetColor(255, 0, 0);
+                ofDrawCircle(v.x + offset[0].x, v.y + offset[0].y, 20 + scaledVol * 100);
+            ofPopStyle();
+            
             
             // Dibujar ojo izquierdo
             ofPushMatrix();
                 ofTranslate(puntos[17].x, puntos[17].y);
                 //ofRotateZ(angle);
-                ojoI.draw(0, 480,
+                ojoI.draw(offset[1].x, offset[1].y,
                           abs(puntos[17].x - puntos[21].x) * (1 + scaledVol),
                           abs(puntos[17].y - puntos[41].y) * (1 + scaledVol));
             
@@ -91,7 +112,7 @@ void ofApp::draw() {
             ofPushMatrix();
                 ofTranslate(puntos[22].x, puntos[22].y);
                 //ofRotateZ(angle);
-                ojoD.draw(0, 480,
+                ojoD.draw(offset[1].x, offset[1].y,
                           abs(puntos[22].x - puntos[26].x) * (1 + scaledVol),
                           abs(puntos[22].y - puntos[47].y) * (1 + scaledVol));
             
@@ -102,7 +123,7 @@ void ofApp::draw() {
             
                 ofTranslate(puntos[48].x, puntos[48].y);
                 //ofRotateZ(angle);
-                boca.draw(0, 480,
+                boca.draw(offset[1].x, offset[1].y,
                           abs(puntos[54].x - puntos[48].x) * (1 + scaledVol),
                           abs(puntos[50].y - puntos[57].y) * (1 + scaledVol));
 
@@ -120,8 +141,9 @@ void ofApp::draw() {
             ofTranslate(5, 10);
             int n = classifier.size();
             int primary = classifier.getPrimaryExpression();
-            if (n && primary == 0) {
-                ofSystem("ls");
+            if (n && primary == 0 && listening) {
+                ofSystem("/Users/pulso8/instrucciones.sh");
+                listening = FALSE;
             }
             for(int i = 0; i < n; i++){
                 ofSetColor(i == primary ? ofColor::red : ofColor::black);
@@ -138,7 +160,7 @@ void ofApp::draw() {
 		string() +
 		"r - reset\n" +
 		"e - agregar expresi\u00F3n\n" +
-		"a - add muestra\n" +
+		"a - agregar muestra\n" +
 		"s - guardar expresiones\n"
 		"l - cargar expresiones",
 		14, ofGetHeight() - 7 * 12);
@@ -195,3 +217,5 @@ void ofApp::keyPressed(int key) {
 		classifier.load("expressions");
 	}
 }
+
+

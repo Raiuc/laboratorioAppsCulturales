@@ -23,6 +23,9 @@ public:
     int 	bufferCounter;
     int 	drawCounter;
     int     scene;
+    bool    listening;
+    int     contador;
+    ofVec2f offset[2];
     
     float smoothedVol;
     float scaledVol;

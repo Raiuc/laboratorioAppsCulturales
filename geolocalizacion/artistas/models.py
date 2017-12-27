@@ -2,27 +2,49 @@ from django.db import models
 from django.conf import settings
 from django_google_maps import fields as map_fields
 
-class Artista(models.Model):
-    nombre        = models.CharField(max_length=30)
-    apellido_p    = models.CharField(max_length=30)
-    apellido_m    = models.CharField(max_length=30)
-    sexo          = models.CharField(max_length=20)
-    correo        = models.CharField(max_length=50)
-    nombre_artis  = models.CharField(max_length=30)
-    curriculum    = models.CharField(max_length=500)
-    nombre_com    = models.CharField(max_length=30)
-    cargo         = models.CharField(max_length=30)
-    semblanza     = models.CharField(max_length=500)
-    dir_usu       = models.CharField(max_length=50)
-    dir_com       = models.CharField(max_length=50)
-    foto_per      = models.CharField(max_length=400)
-    foto_com      = models.CharField(max_length=400)
-    red_soc_per   = models.CharField(max_length=400)
-    red_soc_com   = models.CharField(max_length=400)
-    web           = models.CharField(max_length=400)
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
-    created          = models.DateTimeField(auto_now_add = True)
-    modified         = models.DateTimeField(auto_now = True)
+class Artista(models.Model):
+    SEX_CHOICES = (
+        ('MAS', 'Masculino'),
+        ('FEM', 'Femenino'),
+        # ('OTH', 'Otra'),
+    )
+    nombre              = models.CharField(max_length=30)
+    apellido_p          = models.CharField(max_length=30)
+    apellido_m          = models.CharField(max_length=30, blank=True)
+    sexo                = models.CharField(max_length=20, choices = SEX_CHOICES)
+    correo              = models.EmailField(max_length=50, help_text='Proporciona un correo electrónico válido')
+    nombre_artis        = models.CharField(max_length=50)
+    # curriculum          = models.FileField(blank = True)
+
+    nombre_com          = models.CharField(max_length=30)
+    cargo               = models.CharField(max_length=30)
+    semblanza           = models.TextField(max_length=500, blank=True)
+    #Si es nacional despliega catálogo de estados y si es internacional catálogo de países
+    residencia_usuario  = models.CharField(max_length=50)
+    residencia_comp     = models.CharField(max_length=50)
+
+    foto_per            = models.ImageField(upload_to='media', blank=True)
+    foto_per_thumbnail  = ImageSpecField(source='foto_per',
+                                         processors=[ResizeToFill(100, 50)],
+                                         format='JPEG',
+                                         options={'quality': 60})
+
+    # Catálogo de compañías en otra tabla
+    foto_com            = models.ImageField(upload_to='media', blank=True)
+    foto_com_thumbnail  = ImageSpecField(source='foto_com',
+                                     processors=[ResizeToFill(100, 50)],
+                                     format='JPEG',
+                                     options={'quality': 60})
+
+    red_soc_per         = models.URLField(max_length=400)
+    red_soc_com         = models.URLField(max_length=400)
+    web                 = models.CharField(max_length=400)
+
+    created             = models.DateTimeField(auto_now_add = True)
+    modified            = models.DateTimeField(auto_now = True)
 
 
     def __str__(self):
